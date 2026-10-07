@@ -30,7 +30,6 @@ public class NumberService {
                 .orElseThrow();
     }
 
-
     public Integer findIntegerWithTheSmallestNumberOfZeroBits(Numbers numbers) {
         return Optional.ofNullable(numbers.getNumbers())
                 .orElseGet(Collections::emptyList)
