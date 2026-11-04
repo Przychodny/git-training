@@ -2,14 +2,14 @@ package pl.przychod.gittraining.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class Numbers {
+public class Request<T> {
 
-    private List<Integer> numbers;
+    private T content;
 }
