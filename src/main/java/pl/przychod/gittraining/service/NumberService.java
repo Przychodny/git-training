@@ -8,18 +8,14 @@ import java.util.*;
 @Service
 public class NumberService {
 
-    //Napisz metodę, która dla przekazanej listy Integerów
-    //policzy ile jest w nich łącznie cyfr nieparzystych.
+    //Napisz metodę, która dla przekazanej listy Integerów znajduje tego, \
+    // którego liczba bitów zerowych jest najmniejsza.
 
     public Object execute(Numbers numbers, String operation) {
         if ("biggets-sum-of-bits".equals(operation)) {
             return findIntegerWithTheBiggestSumOfBits(numbers);
-        }
-        if ("biggest-number-with-the-biggest-number-of-zero-bits".equals(operation)) {
+        } else if ("biggest-number-with-the-biggest-number-of-zero-bits".equals(operation)) {
             return findIntegerWithTheSmallestNumberOfZeroBits(numbers);
-        }
-        if ("count-odd-numbers".equals(operation)) {
-            return countOddNumbers(numbers);
         }
         throw new IllegalArgumentException("Operation not supported");
     }
@@ -40,22 +36,6 @@ public class NumberService {
                 .stream()
                 .min(Comparator.comparingLong(NumberService::zeroBitCount))
                 .orElseThrow();
-    }
-
-    public  Long countOddNumbers(Numbers numbers) {
-        return Optional.ofNullable(numbers.getNumbers())
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .mapToLong(this::countOddDigits)
-                .sum();
-    }
-
-    private Long countOddDigits(Integer number) {
-        return String.valueOf(Math.abs(number))
-                .chars()
-                .map(Character::getNumericValue)
-                .filter(i -> i % 2 != 0)
-                .count();
     }
 
     private static int zeroBitCount(Integer number) {
