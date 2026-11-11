@@ -7,6 +7,7 @@ import pl.przychod.gittraining.model.Response;
 import java.util.List;
 
 import static pl.przychod.gittraining.service.operations.BiggestSumOfBitsOperation.findIntegerWithTheBiggestSumOfBits;
+import static pl.przychod.gittraining.service.operations.CountOddDigits.countOddDigits;
 import static pl.przychod.gittraining.service.operations.SmallestNumberOfZeroBitsOperation.findIntegerWithTheSmallestNumberOfZeroBits;
 
 @Service
@@ -17,6 +18,7 @@ public class NumberService {
             case "biggets-sum-of-bits" -> findIntegerWithTheBiggestSumOfBits(integers(request));
             case "biggest-number-with-the-biggest-number-of-zero-bits" ->
                     findIntegerWithTheSmallestNumberOfZeroBits(integers(request));
+            case "count-odd-digits" -> countOddDigits(integers(request));
             default -> throw new IllegalArgumentException("Operation not supported");
         };
     }
