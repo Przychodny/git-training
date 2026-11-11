@@ -1,47 +1,28 @@
 package pl.przychod.gittraining.service;
 
 import org.springframework.stereotype.Service;
-import pl.przychod.gittraining.model.Numbers;
+import pl.przychod.gittraining.model.Request;
+import pl.przychod.gittraining.model.Response;
 
-import java.util.*;
+import java.util.List;
+
+import static pl.przychod.gittraining.service.operations.BiggestSumOfBitsOperation.findIntegerWithTheBiggestSumOfBits;
+import static pl.przychod.gittraining.service.operations.SmallestNumberOfZeroBitsOperation.findIntegerWithTheSmallestNumberOfZeroBits;
 
 @Service
 public class NumberService {
 
-    //Napisz metodę, która dla przekazanej listy Integerów znajduje tego, \
-    // którego liczba bitów zerowych jest najmniejsza.
-
-    public Object execute(Numbers numbers, String operation) {
-        if ("biggets-sum-of-bits".equals(operation)) {
-            return findIntegerWithTheBiggestSumOfBits(numbers);
-        } else if ("biggest-number-with-the-biggest-number-of-zero-bits".equals(operation)) {
-            return findIntegerWithTheSmallestNumberOfZeroBits(numbers);
-        }
-        throw new IllegalArgumentException("Operation not supported");
+    public Response<?> execute(Request<?> request, String operation) {
+        return switch (operation) {
+            case "biggets-sum-of-bits" -> findIntegerWithTheBiggestSumOfBits(integers(request));
+            case "biggest-number-with-the-biggest-number-of-zero-bits" ->
+                    findIntegerWithTheSmallestNumberOfZeroBits(integers(request));
+            default -> throw new IllegalArgumentException("Operation not supported");
+        };
     }
 
-    public Integer findIntegerWithTheBiggestSumOfBits(Numbers numbers) {
-        return Optional.ofNullable(numbers.getNumbers())
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .filter(Objects::nonNull)
-                .filter(n -> Integer.bitCount(n) % 2 == 0)
-                .min(Comparator.comparingInt(Integer::bitCount))
-                .orElseThrow();
-    }
-
-    public Integer findIntegerWithTheSmallestNumberOfZeroBits(Numbers numbers) {
-        return Optional.ofNullable(numbers.getNumbers())
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .min(Comparator.comparingLong(NumberService::zeroBitCount))
-                .orElseThrow();
-    }
-
-    private static int zeroBitCount(Integer number) {
-        if (number == null) {
-            return 0;
-        }
-        return Integer.SIZE - Integer.bitCount(number);
+    @SuppressWarnings("unchecked")
+    private static Request<List<Integer>> integers(Request<?> request) {
+        return (Request<List<Integer>>) request;
     }
 }
