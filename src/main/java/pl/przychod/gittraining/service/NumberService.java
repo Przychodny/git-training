@@ -1,13 +1,13 @@
 package pl.przychod.gittraining.service;
 
 import org.springframework.stereotype.Service;
-import pl.przychod.gittraining.model.Numbers;
+import pl.przychod.gittraining.model.Request;
+import pl.przychod.gittraining.model.Response;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class NumberService {
-
     //Napisz metodę, która dla przekazanej listy Integerów
     //policzy ile jest w nich łącznie cyfr nieparzystych.
 
@@ -63,5 +63,4 @@ public class NumberService {
             return 0;
         }
         return Integer.SIZE - Integer.bitCount(number);
-    }
 }
