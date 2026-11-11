@@ -1,27 +1,24 @@
 package pl.przychod.gittraining.service.operations;
 
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Service;
 import pl.przychod.gittraining.model.Request;
 import pl.przychod.gittraining.model.Response;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 
-@UtilityClass
-public class SmallestNumberOfZeroBitsOperation {
+@Service("biggest-number-with-the-biggest-number-of-zero-bits")
+public class SmallestNumberOfZeroBitsOperation implements NumberOperation {
 
-    public static Response<Integer> findIntegerWithTheSmallestNumberOfZeroBits(Request<List<Integer>> request) {
-        Integer result = Optional.ofNullable(request.getContent())
-                .orElseGet(Collections::emptyList)
+    @Override
+    public Response<Integer> execute(Request<?> request) {
+        Integer result = numbers(request)
                 .stream()
-                .min(Comparator.comparingLong(SmallestNumberOfZeroBitsOperation::zeroBitCount))
+                .min(Comparator.comparingLong(this::zeroBitCount))
                 .orElseThrow();
         return new Response<>(result);
     }
 
-    private static int zeroBitCount(Integer number) {
+    private int zeroBitCount(Integer number) {
         if (number == null) {
             return 0;
         }
