@@ -1,21 +1,18 @@
 package pl.przychod.gittraining.service.operations;
 
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Service;
 import pl.przychod.gittraining.model.Request;
 import pl.przychod.gittraining.model.Response;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-@UtilityClass
-public class BiggestSumOfBitsOperation {
+@Service("biggets-sum-of-bits")
+public class BiggestSumOfBitsOperation implements NumberOperation {
 
-    public static Response<Integer> findIntegerWithTheBiggestSumOfBits(Request<List<Integer>> request) {
-        Integer result = Optional.ofNullable(request.getContent())
-                .orElseGet(Collections::emptyList)
+    @Override
+    public Response<Integer> execute(Request<?> request) {
+        Integer result = numbers(request)
                 .stream()
                 .filter(Objects::nonNull)
                 .filter(n -> Integer.bitCount(n) % 2 == 0)
