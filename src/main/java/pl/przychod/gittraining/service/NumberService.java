@@ -7,6 +7,7 @@ import pl.przychod.gittraining.model.Response;
 import java.util.List;
 
 import static pl.przychod.gittraining.service.operations.BiggestSumOfBitsOperation.findIntegerWithTheBiggestSumOfBits;
+import static pl.przychod.gittraining.service.operations.CountNumbersWithMoreThan3EvenDigits.countNumbersWithMoreThan3EvenDigits;
 import static pl.przychod.gittraining.service.operations.CountOddDigits.countOddDigits;
 import static pl.przychod.gittraining.service.operations.SmallestNumberOfZeroBitsOperation.findIntegerWithTheSmallestNumberOfZeroBits;
 
@@ -19,6 +20,8 @@ public class NumberService {
             case "biggest-number-with-the-biggest-number-of-zero-bits" ->
                     findIntegerWithTheSmallestNumberOfZeroBits(integers(request));
             case "count-odd-digits" -> countOddDigits(integers(request));
+            case "count-numbers-with-more-than-3-even-digits" -> countNumbersWithMoreThan3EvenDigits(integers(request));
+
             default -> throw new IllegalArgumentException("Operation not supported");
         };
     }
