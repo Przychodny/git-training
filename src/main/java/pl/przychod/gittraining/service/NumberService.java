@@ -1,30 +1,24 @@
 package pl.przychod.gittraining.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.przychod.gittraining.model.Request;
 import pl.przychod.gittraining.model.Response;
+import pl.przychod.gittraining.service.operations.NumberOperation;
 
-import java.util.List;
-
-import static pl.przychod.gittraining.service.operations.BiggestSumOfBitsOperation.findIntegerWithTheBiggestSumOfBits;
-import static pl.przychod.gittraining.service.operations.CountOddDigits.countOddDigits;
-import static pl.przychod.gittraining.service.operations.SmallestNumberOfZeroBitsOperation.findIntegerWithTheSmallestNumberOfZeroBits;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class NumberService {
 
-    public Response<?> execute(Request<?> request, String operation) {
-        return switch (operation) {
-            case "biggets-sum-of-bits" -> findIntegerWithTheBiggestSumOfBits(integers(request));
-            case "biggest-number-with-the-biggest-number-of-zero-bits" ->
-                    findIntegerWithTheSmallestNumberOfZeroBits(integers(request));
-            case "count-odd-digits" -> countOddDigits(integers(request));
-            default -> throw new IllegalArgumentException("Operation not supported");
-        };
-    }
+    private final Map<String, NumberOperation> operations;
 
-    @SuppressWarnings("unchecked")
-    private static Request<List<Integer>> integers(Request<?> request) {
-        return (Request<List<Integer>>) request;
+    public Response<?> execute(Request<?> request, String operation) {
+        NumberOperation selectedOperation = operations.get(operation);
+        if (selectedOperation == null) {
+            throw new IllegalArgumentException("Operation not supported");
+        }
+        return selectedOperation.execute(request);
     }
 }

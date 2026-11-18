@@ -1,26 +1,22 @@
 package pl.przychod.gittraining.service.operations;
 
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Service;
 import pl.przychod.gittraining.model.Request;
 import pl.przychod.gittraining.model.Response;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+@Service("count-odd-digits")
+public class CountOddDigits implements NumberOperation {
 
-@UtilityClass
-public class CountOddDigits {
-
-    public static Response<Long> countOddDigits(Request<List<Integer>> request) {
-        Long count = Optional.ofNullable(request.getContent())
-                .orElseGet(Collections::emptyList)
+    @Override
+    public Response<Long> execute(Request<?> request) {
+        Long count = numbers(request)
                 .stream()
-                .mapToLong(CountOddDigits::countOddDigits)
+                .mapToLong(this::countOddDigits)
                 .sum();
         return new Response<>(count);
     }
 
-    private static Long countOddDigits(Integer number) {
+    private Long countOddDigits(Integer number) {
         return String.valueOf(Math.abs(number))
                 .chars()
                 .map(Character::getNumericValue)
