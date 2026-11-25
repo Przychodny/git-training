@@ -4,48 +4,17 @@ import org.springframework.stereotype.Service;
 import pl.przychod.gittraining.model.Request;
 import pl.przychod.gittraining.model.Response;
 
-import java.util.*;
+import static pl.przychod.gittraining.service.operations.BiggestAsciiCodeOperation.findStringWithTheBiggestAsciiCode;
+import static pl.przychod.gittraining.service.operations.MostLettersAOperation.findStringWithTheMostLettersA;
 
 @Service
 public class StringService {
 
-    //Napisz metodę, która dla przekazanej listy Stringów znajduje tego, którego suma kodów ascii jest największa.
-
-    public Response<String> execute(Request<List<String>> request, String operation) {
-        if ("find-string-with-the-biggest-ascii-code".equals(operation)) {
-            return new Response<>(findStringWithTheBiggestAsciiCode(request.getContent()));
-        }
-        if ("find-string-with-the-most-letters-a".equals(operation)) {
-            return new Response<>(findStringWithTheMostLettersA(request.getContent()));
-        }
-        throw new IllegalArgumentException("Unsupported operation: " + operation);
-    }
-
-    private String findStringWithTheBiggestAsciiCode(List<String> strings) {
-        return Optional.ofNullable(strings)
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .filter(Objects::nonNull)
-                .max(Comparator.comparingInt(this::sumAsciiCodes))
-                .orElseThrow();
-    }
-
-    private String findStringWithTheMostLettersA(List<String> strings) {
-        return Optional.ofNullable(strings)
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .filter(Objects::nonNull)
-                .max(Comparator.comparingLong(this::letterCounter))
-                .orElseThrow();
-    }
-
-    private int sumAsciiCodes(String word) {
-        return word.chars().sum();
-    }
-
-    private long letterCounter(String word) {
-        return word.chars()
-                .filter(c -> c == 'a')
-                .count();
+    public Response<?> execute(Request<?> request, String operation) {
+        return switch (operation) {
+            case "find-string-with-the-biggest-ascii-code" -> findStringWithTheBiggestAsciiCode(request);
+            case "find-string-with-the-most-letters-a" -> findStringWithTheMostLettersA(request);
+            case null, default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
+        };
     }
 }
